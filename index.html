@@ -844,19 +844,24 @@
       transform: translateY(0);  
     }  
 
-    .contact-modal {  
-      position: fixed;  
-      top: 0;  
-      left: 0;  
-      width: 100%;  
-      height: 100%;  
-      display: flex;  
-      align-items: center;  
-      justify-content: center;  
-      z-index: 99999;  
-      padding: 20px;  
-    }  
+   .contact-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 99999;
+  padding: 40px 20px;
+  overflow-y: auto;
+}  
 
+.modal-content{
+max-height:90vh;
+overflow-y:auto;
+}
     .modal-overlay {  
       position: absolute;  
       top: 0;  
@@ -1523,320 +1528,342 @@
   </button>  
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      try {
-        VANTA.NET({
-          el: "#vanta-bg",
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.00,
-          minWidth: 200.00,
-          scale: 1.00,
-          scaleMobile: 1.00,
-          color: 0x38bdf8,
-          backgroundColor: 0x0a0a0a,
-          points: 12.00,
-          maxDistance: 22.00,
-          spacing: 18.00,
-          showDots: true
-        });
-      } catch (e) {
-        console.log("Vanta fallback skipped");
-      }
 
-      const packageStock = {
-        'panel-1': true,
-        'panel-2': true,
-        'panel-3': true,
-        'panel-4': true,
-        'vps-1': true,
-        'vps-2': true,
-        'vps-3': true,
-        'vps-5': true,
-        'vps-6': true,
-        'vps-nat-1': true,
-        'vps-nat-2': true,
-        'vps-nat-3': true,
-        'vps-nat-4': true,
-      };
-      
-      const contactConfig = {
-        'panel': {
-          whatsapp: true,     
-          telegramOwner: false, 
-          telegramBot: true,   
-          botUsername: false
-        },
-        'vps': {
-          whatsapp: true,    
-          telegramOwner: true, 
-          telegramBot: false   
-        },
-        'vps-nat': {  
-          whatsapp: false,    
-          telegramOwner: false, 
-          telegramBot: true,
-          botUsername: false
-        }
-      };
+document.addEventListener("DOMContentLoaded", () => {
 
-      const createModal = (packageName, description, price, paketId) => {
-        const existingModal = document.querySelector('.contact-modal');
-        if (existingModal) existingModal.remove();
-        
-        let packageType = 'panel';
-        if (paketId.startsWith('vps-')) {
-          packageType = 'vps';
-        } else if (paketId.startsWith('vps-nat-')) {
-          packageType = 'vps-nat';
-        } else if (paketId.startsWith('promo-')) {
-          packageType = 'promo';
-        }
-        
-        const config = contactConfig[packageType];
-        let contactOptionsHTML = '';
-        
-        if (paketId.startsWith('vps-nat-')) {
-          contactOptionsHTML = `
-            <a href="https://t.me/nfstoreid" 
-               class="contact-option telegram-bot-option" target="_blank">
-              <div class="option-icon">
-                <i class="fas fa-robot"></i>
-              </div>
-              <div class="option-text">
-                <h4>Telegram</h4>
-                <p>Pesan lewat admin telegram</p>
-              </div>
-            </a>
-          `;
-        } 
-        
-        else {
-          if (config.whatsapp === true) {
-            contactOptionsHTML += `
-              <a href="https://wa.me/62895428690084?text=${encodeURIComponent(`Halo, saya ingin pesan paket :\n\nNama Paket : ${packageName}\nDeskripsi: ${description}\nHarga: ${price}\n\nApakah masih tersedia?`)}" 
-                 class="contact-option whatsapp-option" target="_blank">
-                <div class="option-icon">
-                  <i class="fab fa-whatsapp"></i>
-                </div>
-                <div class="option-text">
-                  <h4>WhatsApp</h4>
-                  <p>Hubungi via WhatsApp</p>
-                </div>
-              </a>
-            `;
-          }
-          
-          if (config.telegramOwner === true) {
-            contactOptionsHTML += `
-              <a href="https://t.me/nfstoreid?text=${encodeURIComponent(`Halo, saya ingin pesan paket:\n\nNama Paket : ${packageName}\nDeskripsi : ${description}\nHarga : ${price}\n\nApakah masih tersedia?`)}" 
-                 class="contact-option telegram-owner-option" target="_blank">
-                <div class="option-icon">
-                  <i class="fab fa-telegram"></i>
-                </div>
-                <div class="option-text">
-                  <h4>Telegram Owner</h4>
-                  <p>Hubungi langsung owner</p>
-                </div>
-              </a>
-            `;
-          }
-          
-          if (config.telegramBot === true) {
-            contactOptionsHTML += `
-              <a href="https://t.me/nfstoreid" 
-                 class="contact-option telegram-bot-option" target="_blank">
-                <div class="option-icon">
-                  <i class="fas fa-robot"></i>
-                </div>
-                <div class="option-text">
-                  <h4>Telegram Owner</h4>
-                  <p>Pesan lewat admin Telegram</p>
-                </div>
-              </a>
-            `;
-          }
-        }
-        
-        // Jika tidak ada opsi kontak yang tersedia
-        if (!contactOptionsHTML) {
-          contactOptionsHTML = `
-            <div class="contact-option disabled" style="opacity: 0.7; cursor: not-allowed;">
-              <div class="option-icon">
-                <i class="fas fa-ban"></i>
-              </div>
-              <div class="option-text">
-                <h4>Tidak Tersedia</h4>
-                <p>Kontak tidak tersedia untuk paket ini</p>
-              </div>
-            </div>
-          `;
-        }
+const QRIS_IMAGE = "https://autoresbot.com/tmp_files/142a88d6-ac3e-4e78-88c8-628cc814a5f4.jpg";
 
-        const modal = document.createElement('div');
-        modal.className = 'contact-modal';
-        modal.innerHTML = `
-          <div class="modal-overlay"></div>
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3>Pilih Metode Kontak</h3>
-              <button class="modal-close"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="modal-body">
-              <div class="modal-package-info">
-                <strong>Paket :</strong> ${packageName}<br>
-                <strong>Harga :</strong> ${price}
-              </div>
-              <div class="contact-options">
-                ${contactOptionsHTML}
-              </div>
-            </div>
-          </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        modal.querySelector('.modal-close').addEventListener('click', () => {
-          modal.remove();
-        });
-        
-        modal.querySelector('.modal-overlay').addEventListener('click', () => {
-          modal.remove();
-        });
-        
-        const closeModal = (e) => {
-          if (e.key === 'Escape') {
-            modal.remove();
-            document.removeEventListener('keydown', closeModal);
-          }
-        };
-        document.addEventListener('keydown', closeModal);
-      };
 
-      const checkStock = () => {
-        const buyButtons = document.querySelectorAll('.buy-btn[data-paket-id]');
-        
-        buyButtons.forEach(button => {
-          const paketId = button.dataset.paketId;
-          const isStokAvailable = packageStock[paketId];
+// VANTA BACKGROUND
+try {
+VANTA.NET({
+el: "#vanta-bg",
+mouseControls: true,
+touchControls: true,
+gyroControls: false,
+minHeight: 200,
+minWidth: 200,
+scale: 1,
+scaleMobile: 1,
+color: 0x38bdf8,
+backgroundColor: 0x0a0a0a,
+points: 12,
+maxDistance: 22,
+spacing: 18,
+showDots: true
+});
+} catch(e){}
 
-          if (!isStokAvailable) {
-            button.classList.add('disabled');
-            button.innerHTML = '<i class="fas fa-times-circle"></i> Stok kosong';
-              
-            button.addEventListener('click', (e) => {
-              e.preventDefault();
-            });
-          } else {
-            button.innerHTML = '<i class="fas fa-shopping-cart"></i> Pesan Sekarang';
-            
-            // HAPUS EVENT LISTENER LAMA
-            button.replaceWith(button.cloneNode(true));
-          }
-        });
 
-        // PASANG EVENT LISTENER BARU
-        document.querySelectorAll('.buy-btn[data-paket-id]').forEach(button => {
-          const paketId = button.dataset.paketId;
-          if (packageStock[paketId]) {
-            button.addEventListener('click', (e) => {
-              e.preventDefault();
-              const card = button.closest('.package-card');
-              const packageName = card.querySelector('.package-name').textContent;
-              const description = card.querySelector('.package-description')?.textContent || '';
-              const price = card.querySelector('.price').textContent;
-              
-              createModal(packageName, description, price, paketId);
-            });
-          }
-        });
-      };
+// MODAL QRIS
+const createModal = (packageName, description, price, paketId) => {
 
-      checkStock();
+const existingModal = document.querySelector(".contact-modal");
+if(existingModal) existingModal.remove();
 
-      const preloader = document.querySelector('.preloader');
-      document.body.style.overflow = 'hidden';
+let productType = "Panel Pterodactyl";
 
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          preloader.style.opacity = '0';
-          preloader.style.visibility = 'hidden';
-          document.body.style.overflow = 'auto';
+if(paketId.startsWith("vps-nat")) productType = "VPS NAT";
+else if(paketId.startsWith("vps")) productType = "VPS";
 
-          preloader.addEventListener('transitionend', () => {
-            preloader.remove();
-          });
-        }, 1500);
-      });
+const message = `Hallo Saya Ingin Pesan :
 
-      const navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', () => {
-        navbar.classList.toggle('scrolled', window.scrollY > 50);
-      });
+Produk : ${productType}
+Paket : ${packageName}
+Harga : ${price}
 
-      const hamburger = document.getElementById('hamburger');
-      const navMenu = document.getElementById('nav-menu');
-      const navLinks = document.querySelectorAll('.nav-link');
+Saya Sudah TF Lewat QRIS Di Website, Segera Konfirmasi Ya Min`;
 
-      hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.innerHTML = navMenu.classList.contains('active')
-          ? '<i class="fas fa-times"></i>'
-          : '<i class="fas fa-bars"></i>';
-      });
+const encodedMsg = encodeURIComponent(message);
 
-      navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          navMenu.classList.remove('active');
-          hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-      });
+const modal = document.createElement("div");
+modal.className = "contact-modal";
 
-      const toggleButtons = document.querySelectorAll('.toggle-btn');
-      const packageContainers = document.querySelectorAll('.package-container');
+modal.innerHTML = `
 
-      toggleButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          toggleButtons.forEach(btn => btn.classList.remove('active'));
-          packageContainers.forEach(container => container.classList.remove('active'));
-          button.classList.add('active');
-          document.getElementById(`${button.dataset.package}-package`).classList.add('active');
-        });
-      });
+<div class="modal-overlay"></div>
 
-      const faqItems = document.querySelectorAll('.faq-item');
-      faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        question.addEventListener('click', () => {
-          const isActive = item.classList.contains('active');
-          faqItems.forEach(otherItem => otherItem.classList.remove('active'));
-          if (!isActive) item.classList.add('active');
-        });
-      });
+<div class="modal-content">
 
-      const backToTopButton = document.getElementById('backToTop');
-      window.addEventListener('scroll', () => {
-        backToTopButton.classList.toggle('visible', window.scrollY > 300);
-      });
+<div class="modal-header">
+<h3>Pembayaran QRIS</h3>
+<button class="modal-close"><i class="fas fa-times"></i></button>
+</div>
 
-      backToTopButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+<div class="modal-body">
 
-      const fadeInElements = document.querySelectorAll('.fade-in');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-        
-      fadeInElements.forEach(el => observer.observe(el));
-    });
-  </script>
+<div class="modal-package-info">
+<strong>Produk :</strong> ${productType}<br>
+<strong>Paket :</strong> ${packageName}<br>
+<strong>Harga :</strong> ${price}
+</div>
+
+<div style="text-align:center;margin-bottom:20px">
+
+<img src="${QRIS_IMAGE}" style="width:100%;max-width:280px;border-radius:12px">
+
+<p style="margin-top:10px;color:#cbd5e1;font-size:0.9rem">
+Scan QRIS di atas untuk melakukan pembayaran
+</p>
+
+</div>
+
+<div style="background:rgba(56,189,248,0.1);
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+border-left:4px solid #38bdf8">
+
+<b>Status Pembayaran :</b>
+
+<label style="display:block;margin-top:8px">
+<input type="radio" name="payment" value="belum" checked> Belum Bayar
+</label>
+
+<label style="display:block">
+<input type="radio" name="payment" value="sudah"> Sudah Bayar
+</label>
+
+<p style="margin-top:10px;font-size:0.85rem;color:#cbd5e1">
+Setelah melakukan pembayaran QRIS silahkan klik tombol <b>Saya Sudah Bayar</b> untuk konfirmasi ke admin.
+</p>
+
+</div>
+
+<div class="contact-options">
+
+<a id="waLink"
+href="https://wa.me/62895428690084?text=${encodedMsg}" 
+class="contact-option whatsapp-option" target="_blank">
+
+<div class="option-icon">
+<i class="fab fa-whatsapp"></i>
+</div>
+
+<div class="option-text">
+<h4 id="waStatusText">Saya Belum Bayar (WhatsApp)</h4>
+<p>Kirim bukti transfer ke owner</p>
+</div>
+
+</a>
+
+<a id="tgLink"
+href="https://t.me/nfstoreid?text=${encodedMsg}" 
+class="contact-option telegram-owner-option" target="_blank">
+
+<div class="option-icon">
+<i class="fab fa-telegram"></i>
+</div>
+
+<div class="option-text">
+<h4 id="tgStatusText">Saya Belum Bayar (Telegram)</h4>
+<p>Kirim bukti transfer ke owner</p>
+</div>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.body.appendChild(modal);
+
+modal.querySelector(".modal-close").onclick = () => modal.remove();
+modal.querySelector(".modal-overlay").onclick = () => modal.remove();
+
+};
+
+
+// BUTTON PESAN
+document.querySelectorAll(".buy-btn").forEach(button => {
+
+button.addEventListener("click", e => {
+
+e.preventDefault();
+
+const card = button.closest(".package-card");
+
+const packageName = card.querySelector(".package-name").textContent;
+
+const description = card.querySelector(".package-description")?.textContent || "";
+
+const price = card.querySelector(".price").textContent;
+
+const paketId = button.dataset.paketId;
+
+createModal(packageName, description, price, paketId);
+
+});
+
+});
+
+// STATUS PEMBAYARAN
+document.addEventListener("change", e => {
+
+if(e.target.name === "payment"){
+
+const status = e.target.value
+
+const waText = document.getElementById("waStatusText")
+const tgText = document.getElementById("tgStatusText")
+
+const waLink = document.getElementById("waLink")
+const tgLink = document.getElementById("tgLink")
+
+if(!waText || !tgText || !waLink || !tgLink) return
+
+const produk = document.querySelector(".modal-package-info").innerText
+
+let message = ""
+
+if(status === "sudah"){
+
+waText.innerText = "Saya Sudah Bayar (WhatsApp)"
+tgText.innerText = "Saya Sudah Bayar (Telegram)"
+
+message = `Hallo Admin,
+
+Saya sudah melakukan pembayaran.
+
+${produk}
+
+Berikut bukti pembayaran saya.`
+
+}else{
+
+waText.innerText = "Saya Belum Bayar (WhatsApp)"
+tgText.innerText = "Saya Belum Bayar (Telegram)"
+
+message = `Hallo Admin,
+
+Saya ingin memesan produk berikut tetapi belum melakukan pembayaran.
+
+${produk}
+
+Mohon informasi lebih lanjut.`
+
+}
+
+const encoded = encodeURIComponent(message)
+
+waLink.href = `https://wa.me/62895428690084?text=${encoded}`
+tgLink.href = `https://t.me/nfstoreid?text=${encoded}`
+
+}
+
+})
+
+
+// TOGGLE PACKAGE
+const toggleButtons = document.querySelectorAll(".toggle-btn");
+const containers = document.querySelectorAll(".package-container");
+
+toggleButtons.forEach(btn => {
+
+btn.addEventListener("click", () => {
+
+toggleButtons.forEach(b=>b.classList.remove("active"));
+containers.forEach(c=>c.classList.remove("active"));
+
+btn.classList.add("active");
+
+document.getElementById(`${btn.dataset.package}-package`).classList.add("active");
+
+});
+
+});
+
+
+// FAQ
+document.querySelectorAll(".faq-item").forEach(item => {
+
+item.querySelector(".faq-question").onclick = () => {
+
+const active = item.classList.contains("active");
+
+document.querySelectorAll(".faq-item").forEach(i=>i.classList.remove("active"));
+
+if(!active) item.classList.add("active");
+
+};
+
+});
+
+
+// NAVBAR SCROLL
+const navbar = document.getElementById("navbar");
+
+window.addEventListener("scroll", ()=>{
+
+navbar.classList.toggle("scrolled", window.scrollY > 50);
+
+});
+
+
+// BACK TO TOP
+const backToTop = document.getElementById("backToTop");
+
+window.addEventListener("scroll", ()=>{
+
+backToTop.classList.toggle("visible", window.scrollY > 300);
+
+});
+
+backToTop.onclick = ()=>window.scrollTo({top:0,behavior:"smooth"});
+
+
+// HAMBURGER MENU
+const hamburger = document.getElementById("hamburger");
+const navMenu = document.getElementById("nav-menu");
+
+hamburger.onclick = ()=>{
+
+navMenu.classList.toggle("active");
+
+hamburger.innerHTML = navMenu.classList.contains("active")
+? '<i class="fas fa-times"></i>'
+: '<i class="fas fa-bars"></i>';
+
+};
+
+
+// PRELOADER
+const preloader = document.querySelector(".preloader");
+
+window.addEventListener("load",()=>{
+
+setTimeout(()=>{
+
+preloader.style.opacity="0";
+preloader.style.visibility="hidden";
+
+},1200);
+
+});
+
+
+// FADE IN
+const observer = new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("visible");
+
+}
+
+});
+
+},{threshold:0.1});
+
+document.querySelectorAll(".fade-in").forEach(el=>observer.observe(el));
+
+});
+</script>
 </body>  
 </html>
