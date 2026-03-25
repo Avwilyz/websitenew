@@ -1247,64 +1247,52 @@ overflow-y:auto;
         </div> 
         
         <div id="panel-package" class="package-container active">  
-          <div class="packages">  
-            <div class="package-card fade-in">  
-              <h3 class="package-name"><i class="fas fa-server"></i> Paket Basic</h3>  
-              <p class="package-description">Cocok untuk bot dengan traffic kecil</p>  
-              <ul class="package-specs">  
-                <li><i class="fas fa-memory"></i> 3GB RAM</li>  
-                <li><i class="fas fa-hdd"></i> 9GB Disk Space</li>  
-                <li><i class="fas fa-microchip"></i> 100% CPU</li>   
-              </ul>  
-              <p class="price">Rp3.000<span class="price-period">/ Bulan</span></p>  
-              <button class="buy-btn" data-paket-id="panel-1">  
-                <i class="fas fa-shopping-cart"></i> Pesan Sekarang  
-              </button>  
-            </div>   
-          
-            <div class="package-card fade-in" style="transition-delay: 0.1s">  
-              <h3 class="package-name"><i class="fas fa-server"></i> Paket Standar</h3>  
-              <p class="package-description">Cocok untuk bot menengah dengan traffic sedang</p>  
-              <ul class="package-specs">  
-                <li><i class="fas fa-memory"></i> 5GB RAM</li>  
-                <li><i class="fas fa-hdd"></i> 12GB Disk Space</li>  
-                <li><i class="fas fa-microchip"></i> 150% CPU</li>   
-              </ul>  
-              <p class="price">Rp5.000<span class="price-period">/ Bulan</span></p>  
-              <button class="buy-btn" data-paket-id="panel-2">  
-                <i class="fas fa-shopping-cart"></i> Pesan Sekarang  
-              </button>  
-            </div>  
+  <div class="packages">  
 
-            <div class="package-card featured fade-in" style="transition-delay: 0.2s">  
-              <h3 class="package-name"><i class="fas fa-server"></i> Paket Pro</h3>  
-              <p class="package-description">Pilihan tepat untuk bot dengan performa optimal</p>  
-              <ul class="package-specs">  
-                <li><i class="fas fa-memory"></i> 8GB RAM</li>  
-                <li><i class="fas fa-hdd"></i> 15GB Disk Space</li>  
-                <li><i class="fas fa-microchip"></i> 200% CPU</li>   
-              </ul>  
-              <p class="price">Rp7.000<span class="price-period">/ Bulan</span></p>  
-              <button class="buy-btn" data-paket-id="panel-3">  
-                <i class="fas fa-shopping-cart"></i> Pesan Sekarang  
-              </button>  
-            </div>  
+    <!-- AUTO GENERATE 1GB - 10GB -->
+    <script>
+      const container = document.currentScript.parentElement;
 
-            <div class="package-card fade-in" style="transition-delay: 0.3s">  
-              <h3 class="package-name"><i class="fas fa-server"></i> Paket Ultimate</h3>  
-              <p class="package-description">Untuk kebutuhan yang membutuhkan resource lebih</p>  
-              <ul class="package-specs">  
-                <li><i class="fas fa-memory"></i> UNLIMITED RAM</li>  
-                <li><i class="fas fa-hdd"></i> UNLIMITED Disk Space</li>  
-                <li><i class="fas fa-microchip"></i> UNLIMITED CPU</li>  
-              </ul>  
-              <p class="price">Rp 8.000<span class="price-period">/ Bulan</span></p>  
-              <button class="buy-btn" data-paket-id="panel-4">  
-                <i class="fas fa-shopping-cart"></i> Pesan Sekarang  
-              </button>  
-            </div>  
-          </div>  
-        </div>  
+      for (let gb = 1; gb <= 10; gb++) {
+        const disk = gb * 3;
+        const cpu = gb * 30;
+        const harga = gb * 1000;
+
+        container.innerHTML += `
+        <div class="package-card fade-in">  
+          <h3 class="package-name"><i class="fas fa-server"></i> Paket ${gb}GB</h3>  
+          <p class="package-description">Cocok untuk bot ${gb <= 3 ? 'ringan' : gb <= 6 ? 'menengah' : 'berat'}</p>  
+          <ul class="package-specs">  
+            <li><i class="fas fa-memory"></i> ${gb}GB RAM</li>  
+            <li><i class="fas fa-hdd"></i> ${disk}GB Disk Space</li>  
+            <li><i class="fas fa-microchip"></i> ${cpu}% CPU</li>   
+          </ul>  
+          <p class="price">Rp${harga.toLocaleString()}<span class="price-period">/ Bulan</span></p>  
+          <button class="buy-btn" data-paket-id="panel-${gb}gb">  
+            <i class="fas fa-shopping-cart"></i> Pesan Sekarang  
+          </button>  
+        </div>`;
+      }
+
+      // UNLIMITED
+      container.innerHTML += `
+      <div class="package-card fade-in">  
+        <h3 class="package-name"><i class="fas fa-server"></i> Paket Ultimate</h3>  
+        <p class="package-description">Untuk kebutuhan tanpa batas resource</p>  
+        <ul class="package-specs">  
+          <li><i class="fas fa-memory"></i> UNLIMITED RAM</li>  
+          <li><i class="fas fa-hdd"></i> UNLIMITED Disk Space</li>  
+          <li><i class="fas fa-microchip"></i> UNLIMITED CPU</li>  
+        </ul>  
+        <p class="price">Rp12.000<span class="price-period">/ Bulan</span></p>  
+        <button class="buy-btn" data-paket-id="panel-unli">  
+          <i class="fas fa-shopping-cart"></i> Pesan Sekarang  
+        </button>  
+      </div>`;
+    </script>
+
+  </div>  
+</div>
           
         <div id="vps-package" class="package-container">  
           <div class="packages">  
